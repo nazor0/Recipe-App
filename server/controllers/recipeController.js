@@ -1,4 +1,4 @@
-require ('../models/database');
+require('../models/database');
 const category = require('../models/category');
 
 /**
@@ -8,50 +8,69 @@ const category = require('../models/category');
 
 exports.homepage = async (req, res) => {
 
-  res.render('index', {title: ''});
-
-}
-
-async function insertDymmyCategoryData (){
-try{
-
-  await category.insertMany( [ 
-    {
-      name: "String",
-    image: "thai-food.jpg"
-  },
-
-  {
-    name: "String",
-    image: "thai-food.jpg"
-  },
-
-  {
-    name: "String",
-    image: "thai-food.jpg"
-  },
-
-  {
-    name: "String",
-    image: "thai-food.jpg"
-  },
-
-  {
-    name: "String",
-    image: "thai-food.jpg"
-  },
   
-  {
-    name: "String",
-    image: "thai-food.jpg"
-  },
 
-  ]);
+  try {
 
-} catch(error){
-  console.log('err', + error)
+    const limitNumber = 5
+    const categories = await category.find({}).limit(limitNumber);
 
-  } 
+    res.render('index', {title: 'Cooking Blog - Home', categories});
+  }catch (error){
+
+    res.status(500).send({message: error.message || "Error occured"});
+
+
+
+
+  }
+
+
+
+
+
 }
 
-insertDymmyCategoryData();
+// async function insertDummyCategoryData (){
+// try{
+
+//   await category.insertMany( [ 
+//     {
+//     "name": "American",
+//     image: "american-food.jpg"
+//   },
+
+//   {
+//     "name": "Chinese",
+//     image: "chinese-food.jpg"
+//   },
+
+//   {
+//     "name": "Indian",
+//     image: "indian-food.jpg"
+//   },
+
+//   {
+//     "name": "Mexican",
+//     image: "mexican-food.jpg"
+//   },
+
+//   {
+//     "name": "Spanish",
+//     image: "spanish-food.jpg"
+//   },
+  
+//   {
+//     "name": "Thai",
+//     image: "thai-food.jpg"
+//   },
+
+//   ]);
+
+// } catch(error){
+//   console.log('err', + error)
+
+//   } 
+// }
+
+// insertDummyCategoryData();
