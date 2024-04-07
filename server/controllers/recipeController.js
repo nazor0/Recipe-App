@@ -20,52 +20,102 @@ exports.homepage = async (req, res) => {
 
     res.status(500).send({message: error.message || "Error occured"});
 
+  }
+
+}
 
 
+/**
+ * GET /
+ * /Categories
+ * Categories
+ */
+
+exports.exploreCategories = async (req, res) => {
+
+  
+
+  try {
+
+    const limitNumber = 20;
+    const categories = await category.find({}).limit(limitNumber);
+
+    res.render('categories', {title: 'Cooking Blog - Categories', categories});
+  }catch (error){
+
+    res.status(500).send({message: error.message || "Error occured"});
 
   }
 
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // async function insertDummyCategoryData (){
 // try{
 
 //   await category.insertMany( [ 
 //     {
-//     "name": "American",
+//     name: "American",
 //     image: "american-food.jpg"
 //   },
 
 //   {
-//     "name": "Chinese",
+//     name: "Chinese",
 //     image: "chinese-food.jpg"
 //   },
 
 //   {
-//     "name": "Indian",
+//     name: "Indian",
 //     image: "indian-food.jpg"
 //   },
 
 //   {
-//     "name": "Mexican",
+//     name: "Mexican",
 //     image: "mexican-food.jpg"
 //   },
 
 //   {
-//     "name": "Spanish",
+//     name: "Spanish",
 //     image: "spanish-food.jpg"
 //   },
   
 //   {
-//     "name": "Thai",
+//     name: "Thai",
 //     image: "thai-food.jpg"
 //   },
 
 //   ]);
+
+//   console.log('it worked!')
 
 // } catch(error){
 //   console.log('err', + error)
