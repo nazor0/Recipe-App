@@ -1,0 +1,16 @@
+<div class="container">
+    <h1 class="pb-4">Search Results</h1>
+    <ul>
+        <% recipes.forEach(recipe => { %>
+            <li>
+                <a href="/recipe/<%= recipe.id %>">
+                    <div class="recipe-card">
+                        <img class="recipe-image" src="<%= recipe.image %>" alt="<% recipe.title %>" />
+                        <h2 class="recipe-title"><%= recipe.title %></h2>
+                    </div>
+                </a>
+            </li>
+    <% }) %>
+    </ul>
+    <a href="/">Back to the Home page</a>
+</div>
