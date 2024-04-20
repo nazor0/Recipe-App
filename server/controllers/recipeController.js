@@ -2,7 +2,7 @@ require('../models/database');
 const category = require('../models/category');
 
 const axios = require('axios');
-const key_api = "9c191e5eb0c34564a3c3562ca8084563";
+const key_api = "8f3228ee857245b794de5a9d1a773b1d"; //9c191e5eb0c34564a3c3562ca8084563
 
 /**
  * GET /
@@ -27,8 +27,7 @@ exports.homepage = async (req, res) => {
 
 
 /**
- * GET /
- * /Categories
+ * GET /categories
  * Categories
  */
 
@@ -36,7 +35,7 @@ exports.exploreCategories = async (req, res) => {
 
   try {
 
-    const limitNumber = 20;
+    const limitNumber = 50;
     const categories = await category.find({}).limit(limitNumber);
 
     res.render('categories', {title: 'Cooking Blog - Categories', categories});
@@ -55,10 +54,19 @@ exports.exploreCategories = async (req, res) => {
  */
 
 exports.searchRecipe = async (req, res) => {
+
+  try {
+
   const {query} = req.body;
   const response = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${key_api}`);
   const recipes = response.data.results;
+
   res.render('search', {title: 'Cooking Blog - Search Results', recipes});
+  } catch (error) {
+    
+    res.status(500).send({message: error.message || "Error occured"});
+
+  }
 }
 
 
@@ -69,60 +77,38 @@ exports.searchRecipe = async (req, res) => {
 
 exports.exploreRecipe = async (req, res) => {
 
+try {
+
   const {id} = req.params;
   const response = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${key_api}`);
   const recipe = response.data;
-  res.render('recipe', {recipe})
 
+  res.render('recipe', {title: recipe.title, recipe})
+  } catch (error) {
+  
+  res.status(500).send({message: error.message || "Error occured"});
+
+  }
 }
 
 
+/**
+ * GET /categories/:name
+ * Recipes by Category
+ */
 
+exports.exploreSpecificCategory = async (req, res) => {
 
+  try {
 
+    const cuisine = `${req.params.name}`;
+    const response = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?cuisine=${cuisine}&apiKey=${key_api}`);
+    const recipes = response.data.results;
 
-// async function insertDummyCategoryData(){
-// try{
+    res.render('searchCategory', {title: `Cooking Blog - ${cuisine} Recipes`, recipes});
+  } catch (error){
 
-//   await category.insertMany( [ 
-//     {
-//     name: "American",
-//     image: "american-food.jpg"
-//   },
+    res.status(500).send({message: error.message || "Error occured"});
 
-//   {
-//     name: "Chinese",
-//     image: "chinese-food.jpg"
-//   },
-
-//   {
-//     name: "Indian",
-//     image: "indian-food.jpg"
-//   },
-
-//   {
-//     name: "Mexican",
-//     image: "mexican-food.jpg"
-//   },
-
-//   {
-//     name: "Spanish",
-//     image: "spanish-food.jpg"
-//   },
-  
-//   {
-//     name: "Thai",
-//     image: "thai-food.jpg"
-//   },
-
-//   ]);
-
-//   console.log('it worked!')
-
-// } catch(error){
-//   console.log('err', + error)
-
-//   } 
-// }
-
-// insertDummyCategoryData();
+  }
+}

@@ -1,4 +1,4 @@
-<div class = "row flex =lg-row-reverse align-items-center g-5 py-4 mb-4">
+<!-- <div class = "row flex =lg-row-reverse align-items-center g-5 py-4 mb-4">
   <div class = "col-12 col-lg-6">
     <img src="/img/hero-image.png" width = "607" height="510" class = "d-block mx-lg-auto img fluid" Loading = "lazy" alt = "Cooking with Node.js">
   </div>
@@ -15,15 +15,16 @@
     </div>
 
   </div>
-</div>
+</div> -->
 
 
 <!-- Categories Start -->
 
+<div class = "d-flex mb-2 align-items-center">
+  <h2>Categories</h2>
+</div>
 
 <div class="row row-cols-2 row-cols-lg-6 g-2 g-lg-3 py-4">
-
-
   <% if(categories != '') { %>
     <% categories.forEach(function(category, index) { %>
       <a href="/categories/<%- category.name %>" class="col text-center category__link">
@@ -43,13 +44,12 @@
   </a>
 
 </div>
-
-
-
-
 <!-- Categories End -->
 
+
+
 <!-- Latest Start -->
+
 <section class = "pb-4 pt-4">
 
   <div class = "d-flex mb-2 align-items-center">
@@ -59,35 +59,35 @@
 
   <div class = "row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
     <a href = "/recipe/#" class= "col text-center category__link">
-      <div class = "category__img shadow">
+      <div class="category__img category__img--large shadow">
         <img src = "img/chocolate-banoffe-whoopie-pies.jpg" alt = "View All Categories" Loading = "lazy">
        </div>
        <div class = "pt-1"> Chocolate Banoffee </div>
     </a>
 
     <a href = "/recipe/#" class= "col text-center category__link">
-      <div class = "category__img shadow">
+      <div class="category__img category__img--large shadow">
         <img src = "img/chocolate-banoffe-whoopie-pies.jpg" alt = "View All Categories" Loading = "lazy">
        </div>
        <div class = "pt-1"> Chocolate Banoffee </div>
     </a>
 
     <a href = "/recipe/#" class= "col text-center category__link">
-      <div class = "category__img shadow">
+      <div class="category__img category__img--large shadow">
         <img src = "img/chocolate-banoffe-whoopie-pies.jpg" alt = "View All Categories" Loading = "lazy">
        </div>
        <div class = "pt-1"> Chocolate Banoffee </div>
     </a>
 
     <a href = "/recipe/#" class= "col text-center category__link">
-      <div class = "category__img shadow">
+      <div class="category__img category__img--large shadow">
         <img src = "img/chocolate-banoffe-whoopie-pies.jpg" alt = "View All Categories" Loading = "lazy">
        </div>
        <div class = "pt-1"> Chocolate Banoffee </div>
     </a>
 
     <a href = "/recipe/#" class= "col text-center category__link">
-      <div class = "category__img shadow">
+      <div class="category__img category__img--large shadow">
         <img src = "img/chocolate-banoffe-whoopie-pies.jpg" alt = "View All Categories" Loading = "lazy">
        </div>
        <div class = "pt-1"> Chocolate Banoffee </div>
@@ -97,9 +97,8 @@
   </div>
 
 </section>
-
-
 <!-- Latest End -->
+
 
 
 <!-- Submit Start -->
@@ -120,6 +119,4 @@
   </div>
 
 </section>
-
-
 <!-- Submit End -->
