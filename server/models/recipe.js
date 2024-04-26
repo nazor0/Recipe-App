@@ -11,6 +11,11 @@ const recipeSchema = new mongoose.Schema({
     required: 'This field is required.'
   },
 
+  email: {
+    type: String,
+    required: 'This field is required'
+  },
+
   ingredients: {
     type: Array,
     required: 'This field is required.'
