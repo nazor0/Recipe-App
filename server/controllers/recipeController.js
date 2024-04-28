@@ -21,7 +21,7 @@ exports.homepage = async (req, res) => {
     const food = { latest };
 
 
-    res.render('index', {title: 'Cooking Blog - Home', categories, food});
+    res.render('index', {title: 'Recipe app - Home', categories, food});
   }catch (error){
 
     res.status(500).send({message: error.message || "Error occured"});
@@ -43,7 +43,7 @@ exports.exploreCategories = async (req, res) => {
     const limitNumber = 50;
     const categories = await category.find({}).limit(limitNumber);
 
-    res.render('categories', {title: 'Cooking Blog - Categories', categories});
+    res.render('categories', {title: 'Recipe app - Categories', categories});
   } catch (error){
 
     res.status(500).send({message: error.message || "Error occured"});
@@ -66,7 +66,7 @@ exports.searchRecipe = async (req, res) => {
   const response = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${key_api}`);
   const recipes = response.data.results;
 
-  res.render('search', {title: 'Cooking Blog - Search Results', recipes});
+  res.render('search', {title: 'Recipe app - Search Results', recipes});
   } catch (error) {
     
     res.status(500).send({message: error.message || "Error occured"});
@@ -110,7 +110,7 @@ exports.exploreSpecificCategory = async (req, res) => {
     const response = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?cuisine=${cuisine}&apiKey=${key_api}`);
     const recipes = response.data.results;
 
-    res.render('searchCategory', {title: `Cooking Blog - ${cuisine} Recipes`, recipes});
+    res.render('searchCategory', {title: `Recipe app - ${cuisine} Recipes`, recipes});
   } catch (error){
 
     res.status(500).send({message: error.message || "Error occured"});
@@ -119,7 +119,26 @@ exports.exploreSpecificCategory = async (req, res) => {
 }
 
 /**
- * GET /explore-random
+ * POST /view
+ * View
+ */
+
+exports.viewRecipe = async (req, res) => {
+  try {
+    let viewTerm = req.body.viewTerm;
+    let recipe = await recipe.find({$text: {$view: viewTerm, $diacriticSensitive: true}});
+  res.json(recipe);
+
+  res.render('view', {title: 'Recipe app - Search Results', recipes});
+  } catch (error) {
+    
+    res.status(500).send({message: error.message || "Error occured"});
+
+  }
+}
+
+/**
+ * GET /submit-recipe
  * Submit Recipe
  */
 
@@ -129,7 +148,7 @@ exports.submitRecipe = async (req,res) =>{
   const infoSubmitObj = req.flash('infoSubmit');
 
 
-  res.render('submit-recipe', {title: `Cooking Blog - Submit Recipe`, infoErrorsObj,infoSubmitObj });
+  res.render('submit-recipe', {title: `Recipe app - Submit Recipe`, infoErrorsObj,infoSubmitObj });
 
 }
 
@@ -142,15 +161,15 @@ exports.submitRecipeOnPost = async (req,res) =>{
 
   try {
 
-    const newRecipe = new Recipe ({
+
+    const newRecipe = new recipe ({
 
       name: req.body.name,
       description : req.body.description,
       email: req.body.email,
       ingredients: req.body.ingredients,
       category: req.body.category,
-      image: 'african-food.jpg'
-
+      image: "nigerian-food.jpg"
 
     });
 
@@ -163,15 +182,10 @@ exports.submitRecipeOnPost = async (req,res) =>{
     req.flash('infoSubmit', 'Recipe has been added');
     res.redirect('/submit-recipe');
 
-  } catch (error)
-{
-  // res.json(error);
+  } catch (error){
+  res.json(error);
   req.flash('infoErrors', error);
   res.redirect ('/submit-recipe');
 
-
-
-}  
-  
-
+  }  
 }

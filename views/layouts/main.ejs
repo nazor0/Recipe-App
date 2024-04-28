@@ -13,26 +13,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Platypi:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class = "container-xxl px-md-5 bg-white shadow-lg">
+  <div class = "container-xxl px-md-5 bg-honeydew shadow-lg">
   <header class = "d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
     <a href="/" class = "d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-      <img src="/img/logo.svg" width="229" height="68" alt=" Cooking Blog -Made with Node.js">
+      <img src="/img/logo.svg" width="350" height="90" alt=" recipe app">
     </a>
 
     <ul class = "nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
       
       <li><a href="/" class = "nav-link px-2 link-secondary">Home</a></li>
-      <li><a href="/about" class = "nav-link px-2 link-secondary">About</a></li>
+      
       <li><a href="/submit-recipe" class = "nav-link px-2 link-secondary">Submit</a></li>
-      <li><a href="/contact" class = "nav-link px-2 link-secondary">Contact</a></li>
+      
       </li>
     </ul>
 
     <div class = "col-md-3 text-end">
       <form method="POST" action="/search">
         <input type="text" name="query" class="form-control" placeholder="Search..." aria-label="Search">
+      </form>
+      <form method="POST" action="/view">
+        <input type="text" name="viewTerm" class="form-control" placeholder="view..." aria-label="view">
       </form>
     </div>
 

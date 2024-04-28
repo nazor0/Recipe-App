@@ -13,6 +13,7 @@ router.get('/recipe/:id', recipeController.exploreRecipe);
 router.get('/categories/:name', recipeController.exploreSpecificCategory);
 router.get('/submit-recipe', recipeController.submitRecipe);
 router.post('/submit-recipe', recipeController.submitRecipeOnPost);
+router.post('/view', recipeController.viewRecipe);
 
 
 
