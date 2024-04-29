@@ -1,18 +1,18 @@
 require('../models/database');
-const category = require('../models/category');
-const Recipe = require ('../models/Recipe');
+const Category = require('../models/Category');
+const Recipe = require('../models/Recipe');
 
 const axios = require('axios');
 const key_api = "8f3228ee857245b794de5a9d1a773b1d"; //9c191e5eb0c34564a3c3562ca8084563
 
 /**
  * GET /
- * Homepage
- */
+ * Homepage 
+*/
 exports.homepage = async (req, res) => {
   try {
     const limitNumber = 5
-    const categories = await category.find({}).limit(limitNumber);
+    const categories = await Category.find({}).limit(limitNumber);
     const mine = await Recipe.find({}).sort({_id: -1}).limit(limitNumber);
    
     const food = { mine };
@@ -23,20 +23,19 @@ exports.homepage = async (req, res) => {
   }
 }
 
-
 /**
  * GET /categories
- * Categories
- */
-exports.exploreCategories = async (req, res) => {
+ * Categories 
+*/
+exports.exploreCategories = async(req, res) => {
   try {
-    const limitNumber = 50;
-    const categories = await category.find({}).limit(limitNumber);
-    res.render('categories', {title: 'Categories', categories});
-  } catch (error){
-    res.status(500).send({message: error.message || "Error occured"});
+    const limitNumber = 30;
+    const categories = await Category.find({}).limit(limitNumber);
+    res.render('categories', { title: 'Cooking Blog - Categories', categories } );
+  } catch (error) {
+    res.status(500).send({message: error.message || "Error Occured" });
   }
-}
+} 
 
 
 /**
@@ -53,39 +52,7 @@ exports.exploreSpecificCategory = async (req, res) => {
     res.status(500).send({message: error.message || "Error occured"});
   }
 }
-
-
-/**
- * POST /search
- * Search
- */
-exports.searchRecipe = async (req, res) => {
-  try {
-    const {query} = req.body;
-    const response = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${key_api}`);
-    const recipes = response.data.results;
-    res.render('search', {title: 'Search Results', recipes});
-  } catch (error) {
-    res.status(500).send({message: error.message || "Error occured"});
-  }
-}
-
-
-/**
- * GET /explore-mine
- * Explore Mine 
-*/
-exports.exploreMine = async(req, res) => {
-  try {
-    const limitNumber = 20;
-    const recipe = await Recipe.find({}).sort({ _id: -1 }).limit(limitNumber);
-    res.render('explore-mine', { title: 'My Recipes', recipe } );
-  } catch (error) {
-    res.satus(500).send({message: error.message || "Error Occured" });
-  }
-} 
-
-
+ 
 /**
  * GET /recipe/:id
  * Recipe Spoonacular
@@ -103,6 +70,35 @@ exports.exploreRecipe = async (req, res) => {
 
 
 /**
+ * POST /search
+ * Search 
+*/
+exports.searchRecipe = async (req, res) => {
+  try {
+    const {query} = req.body;
+    const response = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${key_api}`);
+    const recipes = response.data.results;
+    res.render('search', {title: 'Search Results', recipes});
+  } catch (error) {
+    res.status(500).send({message: error.message || "Error occured"});
+  }
+}
+
+/**
+ * GET /explore-mine
+ * Explore mine 
+*/
+exports.exploreMine = async(req, res) => {
+  try {
+    const limitNumber = 20;
+    const recipe = await Recipe.find({}).sort({ _id: -1 }).limit(limitNumber);
+    res.render('explore-mine', { title: 'Cooking Blog - Explore mine', recipe } );
+  } catch (error) {
+    res.satus(500).send({message: error.message || "Error Occured" });
+  }
+} 
+
+/**
  * GET /recipeMine/:id
  * Recipe Mine
 */
@@ -116,105 +112,58 @@ exports.exploreRecipeMine = async(req, res) => {
   }
 } 
 
-
 /**
  * GET /submit-recipe
  * Submit Recipe
- */
-exports.submitRecipe = async (req, res) => {
+*/
+exports.submitRecipe = async(req, res) => {
   const infoErrorsObj = req.flash('infoErrors');
   const infoSubmitObj = req.flash('infoSubmit');
-  res.render('submit-recipe', {title: 'Submit Recipe', infoErrorsObj, infoSubmitObj });
+  res.render('submit-recipe', { title: 'Cooking Blog - Submit Recipe', infoErrorsObj, infoSubmitObj  } );
 }
-
 
 /**
  * POST /submit-recipe
  * Submit Recipe
- */
-exports.submitRecipeOnPost = async (req,res) => {
+*/
+exports.submitRecipeOnPost = async(req, res) => {
   try {
 
-    // let imageUploadFile;
-    // let uploadPath;
-    // let newImageName;
+    let imageUploadFile;
+    let uploadPath;
+    let newImageName;
 
-    // if(!req.files || Object.keys(req.files).length === 0){
-    //   console.log('No Files where uploaded.');
-    // } else {
+    if(!req.files || Object.keys(req.files).length === 0){
+      console.log('No files were uploaded.');
+    } else {
 
-    //   imageUploadFile = req.files.image;
-    //   newImageName = Date.now() + imageUploadFile.name;
+      imageUploadFile = req.files.image;
+      newImageName = Date.now() + imageUploadFile.name;
 
-    //   uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
+      uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
 
-    //   imageUploadFile.mv(uploadPath, function(err){
-    //     if(err) return res.satus(500).send(err);
-    //   })
+      imageUploadFile.mv(uploadPath, function(err){
+        if(err) return res.satus(500).send(err);
+      })
 
-    // }
+    }
 
-    const newRecipe = new Recipe ({
-      // // Currently trying to figure out the issue with the following code:
-      // name: req.body.name,
-      // description : req.body.description,
-      // ingredients: req.body.ingredients,
-      // category: req.body.category,
-      // image: newImageName
-
-      // Pressing submit without typing anything will successfully add the following data into a new recipe
-      name: 'Recipe Name',
-      description : 'Recipe Description ...',
-      ingredients: 'Flour',
-      category: 'American',
-      image: 'southern-friend-chicken.jpg'
+    const newRecipe = new Recipe({
+      name: req.body.name,
+      description: req.body.description,
+      email: req.body.email,
+      ingredients: req.body.ingredients,
+      category: req.body.category,
+      image: newImageName
     });
-
+    
     await newRecipe.save();
 
-    req.flash('infoSubmit', 'Recipe has been added.');
+    req.flash('infoSubmit', 'Recipe has been added.')
     res.redirect('/submit-recipe');
   } catch (error) {
     // res.json(error);
     req.flash('infoErrors', error);
-    res.redirect ('/submit-recipe');
+    res.redirect('/submit-recipe');
   }
 }
-
-
-
-
-
-// async function insertDymmyRecipeData(){
-//     try {
-//       await recipe.insertMany([
-//         { 
-//           "name": "Recipe Name Goes Here",
-//           "description": `Recipe Description Goes Here`,
-//           "email": "recipeemail@raddy.co.uk",
-//           "ingredients": [
-//             "1 level teaspoon baking powder",
-//             "1 level teaspoon cayenne pepper",
-//             "1 level teaspoon hot smoked paprika",
-//           ],
-//           "category": "American", 
-//           "image": "southern-friend-chicken.jpg"
-//         },
-//         { 
-//           "name": "Recipe Name Goes Here",
-//           "description": `Recipe Description Goes Here`,
-//           "ingredients": [
-//             "1 level teaspoon baking powder",
-//             "1 level teaspoon cayenne pepper",
-//             "1 level teaspoon hot smoked paprika",
-//           ],
-//           "category": "American", 
-//           "image": "southern-friend-chicken.jpg"
-//         },
-//       ]);
-//     } catch (error) {
-//       console.log('err', + error)
-//     }
-//   }
-  
-//   insertDymmyRecipeData();
