@@ -31,7 +31,7 @@ exports.exploreCategories = async(req, res) => {
   try {
     const limitNumber = 30;
     const categories = await Category.find({}).limit(limitNumber);
-    res.render('categories', { title: 'Cooking Blog - Categories', categories } );
+    res.render('categories', { title: 'Categories', categories } );
   } catch (error) {
     res.status(500).send({message: error.message || "Error Occured" });
   }
@@ -92,7 +92,7 @@ exports.exploreMine = async(req, res) => {
   try {
     const limitNumber = 20;
     const recipe = await Recipe.find({}).sort({ _id: -1 }).limit(limitNumber);
-    res.render('explore-mine', { title: 'Cooking Blog - Explore mine', recipe } );
+    res.render('explore-mine', { title: 'My Recipes', recipe } );
   } catch (error) {
     res.satus(500).send({message: error.message || "Error Occured" });
   }
@@ -119,7 +119,7 @@ exports.exploreRecipeMine = async(req, res) => {
 exports.submitRecipe = async(req, res) => {
   const infoErrorsObj = req.flash('infoErrors');
   const infoSubmitObj = req.flash('infoSubmit');
-  res.render('submit-recipe', { title: 'Cooking Blog - Submit Recipe', infoErrorsObj, infoSubmitObj  } );
+  res.render('submit-recipe', { title: 'Submit Recipe', infoErrorsObj, infoSubmitObj  } );
 }
 
 /**
